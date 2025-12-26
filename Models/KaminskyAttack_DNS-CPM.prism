@@ -14,7 +14,7 @@ formula cache_poisoned = correct_guess=true;	// Formula cache_poisoned is true i
 
 // Module of the Intruder's machine (IM). IM sends a number of requests for a url.
 module intruder_machine
-	trials : [0..NUMBER_OF_URL_REQUESTS] init 0;	// Number of requests that IM can send to CS.
+	trials : [0..NUMBER_OF_URL_REQUESTS] init 0;		// Number of requests that IM can send to CS.
 	answers_received : [0..NUMBER_OF_URL_REQUESTS] init 0;	// Number of replies received by IM
 
 	// -- Transitions
@@ -74,7 +74,7 @@ module client_server // Victim Resolver
 	[] cache_poisoned=true -> true;
 
 	// If threshold suspicious packets arrived, mitigation is activated
-	[Activate_Mitigation] suspicious_count=threshold -> (mitigation_active'=true);	
+	[Activate_Mitigation] suspicious_count>=threshold -> (mitigation_active'=true);	
 
 	// Reset of suspicious count according to Reset Window Rate
 	//[] suspicious_count>0 & mitigation_active=false -> reset_window_rate : (suspicious_count'=0);
@@ -82,7 +82,7 @@ module client_server // Victim Resolver
 endmodule
 
 module root_server
-	rs_state : [0..1] init 0;	// srs_tate = 0 --> wait for request; rs_state = 1 --> answer request.
+	rs_state : [0..1] init 0;	// rs_state = 0 --> wait for request; rs_state = 1 --> answer request.
 
 	// -- Transitions
 	// 1) Receive reply from CS.
