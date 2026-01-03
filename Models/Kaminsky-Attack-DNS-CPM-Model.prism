@@ -13,7 +13,7 @@ const int port_id_range;
 // Rates
 const double guess;
 const double requests_rate = 1.0;
-const double other_legitimate_requests_rate;
+const double authoritative_dns_workload;
 
 // --- DNS-CPM PARAMETERS ---
 const int tau; // Count-Min Sketch Threshold: after 5 packets we activate the mitigation mechanism (UDP to TCP).
@@ -117,10 +117,7 @@ module target_domain_server
 	[DNS_Request_Resolver_To_Domain] domain_state = 0 -> (domain_state' = 1);
 
 	// 2. Legitimate Response: Closes Race Window
-	[DNS_Response_Domain_To_Resolver] domain_state = 1 -> 1 / (other_legitimate_requests_rate) : (domain_state' = 0);
-
-	// 3. Busy Work ("Noise")
-	[DNS_Response_Domain_Other_Request] domain_state = 1 -> (other_legitimate_requests_rate - 1) / other_legitimate_requests_rate : (domain_state' = 1);
+	[DNS_Response_Domain_To_Resolver] domain_state = 1 -> 1 / (authoritative_dns_workload) : (domain_state' = 0);
 endmodule
 
 
